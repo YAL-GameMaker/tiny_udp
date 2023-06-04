@@ -1,0 +1,8 @@
+tiny_udp-for-GMS1/*
+
+tiny_udp-for-GMS2/*
+!tiny_udp-for-GMS2/assetpackage.yy
+
+tiny_udp-for-GMS2.3+/*
+!tiny_udp-for-GMS2.3+/tiny_udp_23.yyp
+!tiny_udp-for-GMS2.3+/metadata.json

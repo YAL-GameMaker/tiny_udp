@@ -1,0 +1,61 @@
+```set template default.html```
+```set title tiny_udp cheat sheet```
+```set autoapi ext```
+```set intro
+This is a "cheat sheet" for "tiny_udp" extension by YellowAfterlife.  
+The extension can be found on
+[GitHub](https://github.com/YAL-GameMaker/tiny_udp).
+```
+General:
+#[tiny_udp_is_available()->]() {
+	Returns whether the DLL is loaded and good to use.
+}
+#[tiny_udp_get_last_error()->]() {
+	Returns a
+	[WSAGetLastError](https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsagetlasterror)
+	code from the last failed operation
+	([list](https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2)).
+}
+Management:
+#[tiny_udp_create()->]() {
+	Creates and returns a new UDP socket.
+	
+	Returns `undefined` if this somehow fails.
+}
+#[tiny_udp_destroy(udp)]() {
+	Destroys a previously created UDP socket.
+}
+Binding:
+#[tiny_udp_bind(udp, port)->]() {
+	Binds a socket to the specified port (otherwise the system picks a random one).
+	
+	Returns whether successful (fails if port is taken, for example).
+}
+Datagrams:
+#[tiny_udp_packet_send(udp, url, port, buffer, ?size)->]() {
+	Tries to send a datagram to the specified address.  
+	
+	`url` can only be an IPv4 (like `"127.0.0.1"`).  
+	No resolution will be performed so `"localhost"` or a domain will not work.
+	
+	`size` argument can be omitted to use `buffer_tell(buffer)`.
+	
+	Returns the number of bytes that were sent (possibly less than you asked),
+	or `-1` if sending failed.
+}
+#[tiny_udp_packet_receive(udp, buffer)->]() {
+	Tries to retrieve the next datagram from a socket to the specified buffer.
+	
+	Returns the number of bytes retrieved,
+	`-1` if there's an error,
+	and `-2` if there are no more datagrams in the queue.
+	
+	Note that trying to receive datagrams on a socket that was neither bound
+	nor used to send anything yields error 10022 (as it has no port associated).
+}
+#[tiny_udp_packet_get_sender_url(udp)->]() {
+	Returns the sender IP address for the last received datagram.
+}
+#[tiny_udp_packet_get_sender_port(udp)->]() {
+	Returns the sender port for the last received datagram.
+}
